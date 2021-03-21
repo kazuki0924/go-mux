@@ -16,7 +16,7 @@ var (
 )
 
 func init() {
-	posts = []Post{Post{Id: 1, Title: "Title 1", Text: "Text 1"}}
+	posts = []Post{{Id: 1, Title: "Title 1", Text: "Text 1"}}
 }
 
 func getPosts(resp http.ResponseWriter, req *http.Request) {
@@ -28,5 +28,21 @@ func getPosts(resp http.ResponseWriter, req *http.Request) {
 		return
 	}
 	resp.WriteHeader(http.StatusOK)
+	resp.Write(result)
+}
+
+func addPost(resp http.ResponseWriter, req *http.Request) {
+	resp.Header().Set("Content-Type", "application/json")
+	var post Post
+	err := json.NewDecoder(req.Body).Decode(&post)
+	if err != nil {
+		resp.WriteHeader(http.StatusInternalServerError)
+		resp.Write([]byte(`{"error": "Error unmarshalling the request"`))
+		return
+	}
+	post.Id = len(posts) + 1
+	posts = append(posts, post)
+	resp.WriteHeader(http.StatusOK)
+	result, err := json.Marshal(posts)
 	resp.Write(result)
 }
