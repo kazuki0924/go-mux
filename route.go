@@ -3,20 +3,22 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/kazuki0924/go-mux/entity"
 )
 
-type Post struct {
-	Id    int    `json:"id"`
-	Title string `json:"title"`
-	Text  string `json:"text"`
-}
+// type Post struct {
+// 	Id    int    `json:"id"`
+// 	Title string `json:"title"`
+// 	Text  string `json:"text"`
+// }
 
 var (
-	posts []Post
+	posts []entity.Post
 )
 
 func init() {
-	posts = []Post{{Id: 1, Title: "Title 1", Text: "Text 1"}}
+	posts = []entity.Post{{Id: 1, Title: "Title 1", Text: "Text 1"}}
 }
 
 func getPosts(resp http.ResponseWriter, req *http.Request) {
@@ -33,7 +35,7 @@ func getPosts(resp http.ResponseWriter, req *http.Request) {
 
 func addPost(resp http.ResponseWriter, req *http.Request) {
 	resp.Header().Set("Content-Type", "application/json")
-	var post Post
+	var post entity.Post
 	err := json.NewDecoder(req.Body).Decode(&post)
 	if err != nil {
 		resp.WriteHeader(http.StatusInternalServerError)
