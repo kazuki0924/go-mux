@@ -18,7 +18,7 @@ var (
 )
 
 func init() {
-	posts = []entity.Post{{Id: 1, Title: "Title 1", Text: "Text 1"}}
+	posts = []entity.Post{{ID: 1, Title: "Title 1", Text: "Text 1"}}
 }
 
 func getPosts(resp http.ResponseWriter, req *http.Request) {
