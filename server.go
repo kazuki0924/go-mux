@@ -6,11 +6,15 @@ import (
 
 	"github.com/kazuki0924/go-mux/controller"
 	"github.com/kazuki0924/go-mux/infrastructure"
+	"github.com/kazuki0924/go-mux/repository"
+	"github.com/kazuki0924/go-mux/service"
 )
 
 var (
 	httpRouter     infrastructure.Router     = infrastructure.NewMuxRouter()
-	postController controller.PostController = controller.NewPostController()
+	postRepository repository.PostRepository = repository.NewFirestoreRepository()
+	postService    service.PostService       = service.NewPostService(postRepository)
+	postController controller.PostController = controller.NewPostController(postService)
 )
 
 func main() {
