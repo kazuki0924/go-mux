@@ -5,13 +5,13 @@ import (
 	"net/http"
 
 	"github.com/kazuki0924/go-mux/controller"
-	"github.com/kazuki0924/go-mux/infrastructure"
+	router "github.com/kazuki0924/go-mux/infrastructure/router"
 	"github.com/kazuki0924/go-mux/repository"
 	"github.com/kazuki0924/go-mux/service"
 )
 
 var (
-	httpRouter     infrastructure.Router     = infrastructure.NewMuxRouter()
+	httpRouter     router.Router             = router.NewMuxRouter()
 	postRepository repository.PostRepository = repository.NewFirestoreRepository()
 	postService    service.PostService       = service.NewPostService(postRepository)
 	postController controller.PostController = controller.NewPostController(postService)

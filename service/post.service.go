@@ -2,7 +2,7 @@ package service
 
 import (
 	"errors"
-	"math/rand"
+	"time"
 
 	"github.com/kazuki0924/go-mux/entity"
 	"github.com/kazuki0924/go-mux/repository"
@@ -39,7 +39,7 @@ func (*service) Validate(post *entity.Post) error {
 }
 
 func (*service) Create(post *entity.Post) (*entity.Post, error) {
-	post.ID = rand.Int63()
+	post.ID = int64(time.Now().Unix())
 	return repo.Save(post)
 }
 
