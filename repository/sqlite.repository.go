@@ -72,7 +72,7 @@ func (*sqliteRepo) FindAll() ([]entity.Post, error) {
 		return nil, err
 	}
 	defer rows.Close()
-	var posts []entity.Post
+	var posts []entity.Post = []entity.Post{}
 	for rows.Next() {
 		var id int64
 		var title string
