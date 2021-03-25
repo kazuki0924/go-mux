@@ -31,8 +31,8 @@ func TestFindAll(t *testing.T) {
 
 	post := entity.Post{
 		ID:    identifier,
-		Title: "test",
-		Text:  "test",
+		Title: "A",
+		Text:  "B",
 	}
 
 	// Setup expectations
@@ -46,9 +46,32 @@ func TestFindAll(t *testing.T) {
 	mockRepo.AssertExpectations(t)
 
 	// Data Assertion
-	assert.Equal(t, result[0].Title, "test")
-	assert.Equal(t, result[0].Text, "test")
 	assert.Equal(t, result[0].ID, identifier)
+	assert.Equal(t, result[0].Title, "A")
+	assert.Equal(t, result[0].Text, "B")
+}
+
+func TestCreate(t *testing.T) {
+	mockRepo := new(MockRepository)
+
+	post := entity.Post{
+		Title: "A",
+		Text:  "B",
+	}
+
+	// Setup expectations
+	mockRepo.On("Save").Return(&post, nil)
+
+	testService := NewPostService(mockRepo)
+
+	result, err := testService.Create(&post)
+
+	mockRepo.AssertExpectations(t)
+
+	assert.NotNil(t, result.ID)
+	assert.Equal(t, "A", result.Title)
+	assert.Equal(t, "B", result.Text)
+	assert.Nil(t, err)
 }
 
 func TestValidateEmptyPost(t *testing.T) {
