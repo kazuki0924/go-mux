@@ -9,27 +9,30 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-type repo struct{}
+type repo struct {
+	CollectionName string
+}
 
-func NewFirestoreRepository() PostRepository {
-	return &repo{}
+func NewFirestoreRepository(collectionName string) PostRepository {
+	return &repo{
+		CollectionName: collectionName,
+	}
 }
 
 const (
-	projectId      string = "go-mux-2021-03-23"
-	collectionName string = "posts"
+	projectID string = "go-mux-2021-03-23"
 )
 
-func (*repo) Save(post *entity.Post) (*entity.Post, error) {
+func (r *repo) Save(post *entity.Post) (*entity.Post, error) {
 	ctx := context.Background()
-	client, err := firestore.NewClient(ctx, projectId)
+	client, err := firestore.NewClient(ctx, projectID)
 	if err != nil {
 		log.Fatalf("Failed to create a Firestore Client: %v", err)
 		return nil, err
 	}
 
 	defer client.Close()
-	_, _, err = client.Collection(collectionName).Add(ctx, map[string]interface{}{
+	_, _, err = client.Collection(r.CollectionName).Add(ctx, map[string]interface{}{
 		"ID":    post.ID,
 		"Title": post.Title,
 		"Text":  post.Text,
@@ -41,9 +44,9 @@ func (*repo) Save(post *entity.Post) (*entity.Post, error) {
 	return post, nil
 }
 
-func (*repo) FindAll() ([]entity.Post, error) {
+func (r *repo) FindAll() ([]entity.Post, error) {
 	ctx := context.Background()
-	client, err := firestore.NewClient(ctx, projectId)
+	client, err := firestore.NewClient(ctx, projectID)
 	if err != nil {
 		log.Fatalf("Failed to create a Firestore Client: %v", err)
 		return nil, err
@@ -51,7 +54,7 @@ func (*repo) FindAll() ([]entity.Post, error) {
 
 	defer client.Close()
 	var posts []entity.Post
-	it := client.Collection(collectionName).Documents(ctx)
+	it := client.Collection(r.CollectionName).Documents(ctx)
 	for {
 		doc, err := it.Next()
 		if err == iterator.Done {
@@ -69,4 +72,9 @@ func (*repo) FindAll() ([]entity.Post, error) {
 		posts = append(posts, post)
 	}
 	return posts, nil
+}
+
+//Delete: TODO
+func (r *repo) Delete(post *entity.Post) error {
+	return nil
 }

@@ -12,7 +12,7 @@ import (
 
 var (
 	httpRouter     router.Router             = router.NewMuxRouter()
-	postRepository repository.PostRepository = repository.NewFirestoreRepository()
+	postRepository repository.PostRepository = repository.NewFirestoreRepository("posts")
 	postService    service.PostService       = service.NewPostService(postRepository)
 	postController controller.PostController = controller.NewPostController(postService)
 )
