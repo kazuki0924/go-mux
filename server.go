@@ -12,7 +12,7 @@ import (
 
 var (
 	httpRouter     router.Router             = router.NewMuxRouter()
-	postRepository repository.PostRepository = repository.NewSQLiteRepository()
+	postRepository repository.PostRepository = repository.NewDynamoDBRepository()
 	postService    service.PostService       = service.NewPostService(postRepository)
 	postCache      cache.PostCache           = cache.NewRedisCache("localhost:6379", 0, 10)
 	postController controller.PostController = controller.NewPostController(postService, postCache)

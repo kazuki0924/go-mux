@@ -22,7 +22,7 @@ const (
 )
 
 var (
-	postRepo       repository.PostRepository = repository.NewSQLiteRepository()
+	postRepo       repository.PostRepository = repository.NewDynamoDBRepository()
 	postSrv        service.PostService       = service.NewPostService(postRepo)
 	postCh         cache.PostCache           = cache.NewRedisCache("localhost:6379", 0, 10)
 	postController PostController            = NewPostController(postSrv, postCh)
