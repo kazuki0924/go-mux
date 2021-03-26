@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	cloud.google.com/go/firestore v1.5.0
+	github.com/aws/aws-sdk-go v1.38.6 // indirect
 	github.com/cosmtrek/air v1.21.2 // indirect
 	github.com/creack/pty v1.1.11 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
